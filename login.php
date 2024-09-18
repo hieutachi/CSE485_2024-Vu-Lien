@@ -10,22 +10,31 @@
     <link rel="stylesheet" href="css/style_login.css">
 </head>
 <body>
-    <?php 
-    $users = [
-        'user 1' => 'password1',
-        'user 2' => 'password2',
-        'user 3' => 'password3'
-    ];
-    if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-        $username = $_POST['username'];
-        $password = $_POST['password'];
 
-        //Kiểm tra thông tin  đăng nhập
-        if (array_key_exists($username, $users) && $users[$username] == $password) {
-            echo "<script>alert('Đăng nhập không thành công');</script>";
-        } else {
-            echo "<script>alert('Đăng nhập không thành công');</script>";
+    <?php
+    include 'connect.php';
+    if(isset($_POST['submit']) && $_POST["username"] != '' && $_POST["password"] != '' ){
+
+        $username = $_POST["username"];
+        $password = $_POST["password"];
+        $password = md5($password); 
+
+        $sql = "SELECT * FROM users WHERE username='$username' AND password= '$password' ";
+        $user = mysqli_query($conn,$sql);
+        if(mysqli_num_rows($user) > 0){
+            ?>
+            <script>alert("Bạn đã đăng nhập thành công");
+            // window.location.href="";</script>
+            <?php
         }
+        else{
+            ?>
+            <script>alert("Mời kiểm tra lại tài khoản hoặc mật khẩu");
+            // window.location.href="";</script>
+            <?php
+        }
+
+
     }
     ?>
     
@@ -86,13 +95,13 @@
                                 <input type="checkbox">Remember Me
                             </div>
                             <div class="form-group">
-                                <input type="submit" value="Login" class="btn float-end login_btn">
+                                <input type="submit" name="submit" value="Login" class="btn float-end login_btn">
                             </div>
                         </form>
                     </div>
                     <div class="card-footer">
                         <div class="d-flex justify-content-center ">
-                            Don't have an account?<a href="#" class="text-warning text-decoration-none">Sign Up</a>
+                            Don't have an account?<a href="./signup.php" class="text-warning text-decoration-none">Sign Up</a>
                         </div>
                         <div class="d-flex justify-content-center">
                             <a href="#" class="text-warning text-decoration-none">Forgot your password?</a>
