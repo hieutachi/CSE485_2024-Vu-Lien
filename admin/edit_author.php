@@ -10,8 +10,14 @@
     <link rel="stylesheet" href="css/style_login.css">
 </head>
 <body>
-
-    <header>
+    <?php
+        include '../connect.php';
+        $matgia = $_GET['id'];
+        $edit_sql ="SELECT * FROM tacgia WHERE ma_tgia=$matgia";
+        $result = mysqli_query($conn, $edit_sql);
+        $row = mysqli_fetch_assoc($result);
+    ?>
+        <header>
         <nav class="navbar navbar-expand-lg bg-body-tertiary shadow p-3 bg-white rounded">
             <div class="container-fluid">
                 <div class="h3">
@@ -47,47 +53,24 @@
         <!-- <h3 class="text-center text-uppercase mb-3 text-primary">CẢM NHẬN VỀ BÀI HÁT</h3> -->
         <div class="row">
             <div class="col-sm">
-                <a href="add_author.php" class="btn btn-success">Thêm mới</a>
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th scope="col">#</th>
-                            <th scope="col">Tên tác giả</th>
-                            <th>Sửa</th>
-                            <th>Xóa</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php 
-                            include '../connect.php'; // Kết nối CSDL
-                            $sql = "SELECT ma_tgia, ten_tgia FROM tacgia";
-                            $result = $conn->query($sql);
-                        
-                          if ($result->num_rows > 0) {
-                            // Hiển thị thể loại
-                            while($row = $result->fetch_assoc()) {                         
-                            ?>
-                            <tr>
-                                <th scope="row"><?php echo $row['ma_tgia'];?></th>
-                                <td><?php echo $row['ten_tgia'];?></td>
-                                <td>
-                                    <a href="edit_author.php?id=<?php echo $row['ma_tgia'];?>"><i class="fa-solid fa-pen-to-square"></i></a>
-                                </td>
-                                <td>
-                                    <a onclick="return confirm('Bạn có muốn xóa tác giả này không ?');" href="delete_author.php?id=<?php echo $row['ma_tgia'];?>"><i class="fa-solid fa-trash"></i></a>
-                                </td>
-                            </tr>
-                            <?php
-                            
-                            }
+                <h3 class="text-center text-uppercase fw-bold">Sửa thông tin thể loại</h3>
+                <form action="update_edit_author.php" method="post">
+                <input type="hidden" name="id" value="<?php echo $id;?>" id="" >    
+                <div class="input-group mt-3 mb-3">
+                        <span class="input-group-text" id="lblCatId">Mã thể loại</span>
+                        <input type="text" class="form-control" name="matgia" readonly value="<?php echo $row['ma_tgia']?>">
+                    </div>
 
-                        } else {
-                            echo "Không có thể loại nào.";
-                        }
-                        ?>
-                       
-                    </tbody>
-                </table>
+                    <div class="input-group mt-3 mb-3">
+                        <span class="input-group-text" id="lblCatName">Tên thể loại</span>
+                        <input type="text" class="form-control" name="tentgia" value = "<?php echo $row['ten_tgia']?>">
+                    </div>
+
+                    <div class="form-group  float-end ">
+                        <input type="submit" value="Lưu lại" class="btn btn-success">
+                        <a href="author.php" class="btn btn-warning ">Quay lại</a>
+                    </div>
+                </form>
             </div>
         </div>
     </main>

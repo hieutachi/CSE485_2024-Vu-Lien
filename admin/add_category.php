@@ -10,6 +10,39 @@
     <link rel="stylesheet" href="css/style_login.css">
 </head>
 <body>
+    <?php
+    include '../connect.php';
+
+    if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+        $tentloai = isset($_POST['txtCatName']) ? $_POST['txtCatName'] : null;
+
+        if ($tentloai == NULL) {
+            ?>
+            <script>
+                alert("Mời nhập lại");
+                window.location.href = "#";
+            </script>
+            <?php
+        } else {
+            $themsql = "INSERT INTO theloai (ten_tloai) VALUES ('$tentloai')";
+            if (mysqli_query($conn, $themsql)) {
+                ?>
+                <script>
+                    alert("Thêm thành công");
+                    window.location.href = "category.php";
+                </script>
+                <?php
+            } else {
+                ?>
+                <script>
+                    alert("Lỗi khi thêm thể loại");
+                </script>
+                <?php
+            }
+        }
+    }
+    ?>
+
     <header>
         <nav class="navbar navbar-expand-lg bg-body-tertiary shadow p-3 bg-white rounded">
             <div class="container-fluid">
@@ -47,7 +80,7 @@
         <div class="row">
             <div class="col-sm">
                 <h3 class="text-center text-uppercase fw-bold">Thêm mới thể loại</h3>
-                <form action="process_add_category.php" method="post">
+                <form action="add_category.php" method="post">
                     <div class="input-group mt-3 mb-3">
                         <span class="input-group-text" id="lblCatName">Tên thể loại</span>
                         <input type="text" class="form-control" name="txtCatName" >

@@ -15,7 +15,7 @@
     }
     ?> */
 
-    $conn = mysqli_connect("localhost" , "root", "", "btth01_cse485");
+    $conn = mysqli_connect("localhost" , "root", "", "BTTH01_CSE485");
     if ($conn->connect_error) {
         die("Kết nối thất bại: " . $conn->connect_error);
     }

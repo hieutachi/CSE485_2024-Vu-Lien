@@ -71,10 +71,10 @@
                                 <th scope="row"><?php echo $row['ma_tloai'];?></th>
                                 <td><?php echo $row['ten_tloai'];?></td>
                                 <td>
-                                    <a href="edit_category.php?id=1"><i class="fa-solid fa-pen-to-square"></i></a>
+                                    <a href="edit_category.php?id=<?php echo $row['ma_tloai'];?>"><i class="fa-solid fa-pen-to-square"></i></a>
                                 </td>
                                 <td>
-                                    <a href=""><i class="fa-solid fa-trash"></i></a>
+                                    <a onclick="return confirm('Bạn có muốn xóa thể loại này không ?');" href="delete_category.php?id=<?php echo $row['ma_tloai'];?>"><i class="fa-solid fa-trash"></i></a>
                                 </td>
                             </tr>
                             <?php
