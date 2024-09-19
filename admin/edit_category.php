@@ -10,7 +10,26 @@
     <link rel="stylesheet" href="css/style_login.css">
 </head>
 <body>
-    <header>
+    <<?php
+    include '../connect.php'; //Kết nối CSDL
+
+    // Truy vấn lấy danh sách thể loại
+    $sql = "SELECT ma_tloai, ten_tloai FROM theloai";
+    $result = $conn->query($sql);
+
+    if ($result->num_rows > 0) {
+        // Hiển thị thể loại
+        while($row = $result->fetch_assoc()) {
+            echo "<tr>";
+            echo "<td>" . $row['ma_tloai'] . "</td>";
+            echo "<td>" . $row['ten_tloai'] . "</td>";
+            echo "</tr>";
+        }
+    } else {
+        echo "Không có thể loại nào.";
+    }
+    ?>
+        <header>
         <nav class="navbar navbar-expand-lg bg-body-tertiary shadow p-3 bg-white rounded">
             <div class="container-fluid">
                 <div class="h3">
