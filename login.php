@@ -10,34 +10,69 @@
     <link rel="stylesheet" href="css/style_login.css">
 </head>
 <body>
-
+ 
+    <!-- Cách thầy -->
     <?php
-    include 'connect.php';
-    if(isset($_POST['submit']) && $_POST["username"] != '' && $_POST["password"] != '' ){
+        include 'connect.php'; // Kết nối CSDL
 
-        $username = $_POST["username"];
-        $password = $_POST["password"];
-        $password = md5($password); 
+        if (isset($_POST['submit']) && !empty($_POST['username']) && !empty($_POST['password'])) {
+            $username = $_POST['username'];
+            $password = $_POST['password'];
+            $hashed_password = md5($password);
 
-        $sql = "SELECT * FROM users WHERE username='$username' AND password= '$password' ";
-        $user = mysqli_query($conn,$sql);
-        if(mysqli_num_rows($user) > 0){
-            ?>
-            <script>alert("Bạn đã đăng nhập thành công");
-            // window.location.href="";</script>
-            <?php
+            $sql = "SELECT * FROM users WHERE username = ? AND password = ?";
+            $stmt = $conn->prepare($sql);
+            $stmt->bind_param("ss", $username, $hashed_password);
+            $stmt->execute();
+            $result = $stmt->get_result();
+
+            if ($result->num_rows > 0) {
+                ?>
+                <script>
+                    alert("Bạn đã đăng nhập thành công");
+                </script>
+                <?php
+            } else {
+                ?>
+                <script>
+                    alert("Mời kiểm tra lại tài khoản hoặc mật khẩu");
+                </script>
+                <?php
+            }
+            $stmt->close();
         }
-        else{
-            ?>
-            <script>alert("Mời kiểm tra lại tài khoản hoặc mật khẩu");
-            // window.location.href="";</script>
-            <?php
-        }
+
+        $conn->close();
 
 
-    }
+        // Cách 2:
+            /*
+                include 'connect.php';
+                if(isset($_POST['submit']) && $_POST["username"] != '' && $_POST["password"] != '' ){
+
+                    $username = $_POST["username"];
+                    $password = $_POST["password"];
+                    $password = md5($password); 
+
+                    $sql = "SELECT * FROM users WHERE username='$username' AND password= '$password' ";
+                    $user = mysqli_query($conn,$sql);
+                    if(mysqli_num_rows($user) > 0){
+                        ?>
+                        <script>alert("Bạn đã đăng nhập thành công");
+                        // window.location.href="";</script>
+                        <?php
+                    }
+                    else{
+                        ?>
+                        <script>alert("Mời kiểm tra lại tài khoản hoặc mật khẩu");
+                        // window.location.href="";</script>
+                        <?php
+                    }
+
+                }
+            */
     ?>
-    
+
     <header>
         <nav class="navbar navbar-expand-lg bg-body-tertiary shadow p-3 bg-white rounded">
             <div class="container-fluid">

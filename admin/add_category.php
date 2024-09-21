@@ -20,7 +20,7 @@
             ?>
             <script>
                 alert("Mời nhập lại");
-                window.location.href = "#";
+                window.location.href = "category.php";
             </script>
             <?php
         } else {
